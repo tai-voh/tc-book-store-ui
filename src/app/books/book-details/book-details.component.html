@@ -3,7 +3,7 @@
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6">
-                <img mat-card-image class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." />
+                <img mat-card-image class="card-img-top mb-5 mb-md-0" [src]="book.image ? (imagePath + book.image) : 'https://dummyimage.com/600x700/dee2e6/6c757d.jpg'" alt="..." />
             </div>
             <div class="col-md-6">
                 <mat-card-header>
@@ -17,9 +17,10 @@
                     </p>
                 </mat-card-content>
                 <mat-card-actions class="d-flex mt-5">
-                    <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                    <button mat-stroked-button>ADD TO CART</button>
+                    <input matInput [ngClass]="{'form-control text-center me-3': true, 'border-danger': !inputQuantity || inputQuantity.invalid}" id="inputQuantity" type="number" [formControl]="inputQuantity" style="max-width: 4rem" />
+                    <button mat-stroked-button [disabled]="!inputQuantity || inputQuantity.invalid" (click)="addToCart(book.id)">ADD TO CART</button>
                 </mat-card-actions>
+                <mat-hint class="d-block mt-2 text-black-50">Avaiilable in stock: {{book.quantity}}</mat-hint>
             </div>
         </div>
     </div>

@@ -20,7 +20,7 @@ export class LogoutComponent implements OnInit {
     if (!this.tokenStorage.getToken()) {
       this.router.navigate(['/users/login']);
     }
-  }  
+  }
 
   public logOut(): void {
     this.tokenStorage.signOut();

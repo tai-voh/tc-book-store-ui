@@ -1,6 +1,6 @@
 <div class="add-book-form mx-auto my-5">
     <mat-card class="py-3">
-        <mat-card-title class="text-center mt-3 mb-4 fs-2">Add Book</mat-card-title>
+        <mat-card-title class="text-center mt-3 mb-4 fs-2">{{bookId? 'Edit Book' : 'Add Book'}}</mat-card-title>
         <mat-card-content>
             <form [formGroup]="myForm" (ngSubmit)="onSubmit()">                
                 <mat-form-field class="w-100">
@@ -16,6 +16,7 @@
                 <mat-form-field class="w-50" floatLabel="always">
                     <mat-label>Price</mat-label>
                     <input matInput type="number" formControlName="price" id="price" placeholder="0">
+                    <span matTextPrefix>$&nbsp;</span>
                     <mat-error *ngIf="myError('price', 'min')">Invalid price</mat-error>
                 </mat-form-field>
                 <mat-form-field class="w-100">
@@ -23,14 +24,18 @@
                     <mat-select formControlName="categoryId" id="categoryId">
                       <mat-option *ngFor="let c of categories" [value]="c.id">{{c.label}}</mat-option>
                     </mat-select>
-                  </mat-form-field>
+                </mat-form-field>
                 <mat-form-field class="w-100 mb-4">
                     <mat-label>Description</mat-label>
                     <textarea matInput formControlName="description" id="description"></textarea>
                 </mat-form-field>
+                <div class="w-100 mb-4">
+                    <div class="pb-1">Book Image*: {{book.image || ''}}</div>
+                    <input class="w-100" type="file" (change)="selectFile($event)" formControlName="file" id="file" />
+                </div>
                 <input type="hidden" formControlName="userId" id="userId">
                 <div class="text-end">
-                    <button mat-raised-button color="primary" type="submit" [disabled]="!myForm.valid">Add</button>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!myForm.valid">{{bookId? 'Update' : 'Add'}}</button>
                 </div>
             </form>
         </mat-card-content>

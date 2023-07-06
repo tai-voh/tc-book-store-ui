@@ -4,7 +4,7 @@ import { AuthService } from '../../_service/auth.service';
 import { TokenStorageService } from '../../_service/token-storage.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { MessageToastComponent } from '../../utilities/message-toast/message-toast.component';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute  } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private _snackBar: MatSnackBar, private router: Router) { }
+  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private _snackBar: MatSnackBar, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() { 
     this.myForm = new FormGroup({
@@ -37,12 +37,13 @@ export class LoginComponent implements OnInit {
     const { email, password } = this.myForm.value;
     this.authService.login(email, password).subscribe({
       next: (data) => {
-        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
 
         MessageToastComponent.showMessage(this._snackBar, 'Logged in successfully!');
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
         setTimeout(() => {
-          this.router.navigate(['/']);
+          this.router.navigateByUrl(returnUrl);
         }, 1000);
       },
       error: (err) => {

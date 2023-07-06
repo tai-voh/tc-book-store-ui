@@ -1,0 +1,58 @@
+<div class="order-detail-form mx-auto my-5">
+    <mat-card class="py-3">
+        <mat-card-title class="text-center mt-3 mb-4 fs-2">Order</mat-card-title>
+        <mat-card-content>
+            <div class="d-flex mb-4 align-items-end px-3">
+                <div class="w-100">ID: <span class="fw-bold fs-5">{{orderId}}</span></div>
+                <div class="text-secondary text-nowrap">Created date: <span class="fw-bold">{{orderInfo.createdDate| date: 'dd/MM/YYYY'}}</span></div>
+            </div>
+            <div class="container customer-info my-5 ms-1">
+              <div class="fw-bold fs-5">Shipping Information:</div>
+              <div class="row">
+                <div class="col-2 fw-bold">Name:</div>
+                <div class="col">{{orderInfo?.customerInfo?.firstName}} {{orderInfo?.customerInfo?.lastName}}</div>
+              </div>
+              <div class="row">
+                <div class="col-2 fw-bold">Email:</div>
+                <div class="col">{{orderInfo?.customerInfo?.email}}</div>
+              </div>
+              <div class="row">
+                <div class="col-2 fw-bold">Phone:</div>
+                <div class="col">{{orderInfo?.customerInfo?.tel}}</div>
+              </div>
+              <div class="row">
+                <div class="col-2 fw-bold">Address:</div>
+                <div class="col">{{orderInfo?.customerInfo?.address}}</div>
+              </div>
+            </div>
+            
+            
+            <table mat-table [dataSource]="orderInfo.items">
+                <ng-container matColumnDef="title">
+                  <th mat-header-cell *matHeaderCellDef> Item </th>
+                  <td mat-cell *matCellDef="let element"> {{element.title | slice: 0:30}} </td>
+                  <td mat-footer-cell *matFooterCellDef> Sub Total </td>
+                </ng-container>
+                <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                    <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+                    <td mat-footer-cell *matFooterCellDef> </td>
+                  </ng-container>
+                <ng-container matColumnDef="price">
+                  <th mat-header-cell *matHeaderCellDef> Price </th>
+                  <td mat-cell *matCellDef="let element"> {{element.price | currency}} </td>
+                  <td mat-footer-cell *matFooterCellDef>  </td>
+                </ng-container>
+                <ng-container matColumnDef="total">
+                    <th mat-header-cell *matHeaderCellDef> Total </th>
+                    <td mat-cell *matCellDef="let element"> {{element.price * element.quantity | currency}} </td>
+                    <td mat-footer-cell *matFooterCellDef> {{getSubTotal() | currency}} </td>
+                  </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

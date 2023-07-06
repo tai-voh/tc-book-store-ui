@@ -1,9 +1,39 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { CartsService, CartState } from './carts.service';
 
-const API_URL = environment.apiUrl;
+const AUTH_API = environment.apiUrl;
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
+};
+
+export interface orderItem {
+  productId: string,
+  quantity: number,
+  price: number,
+  title: string,
+  _id: string
+}
+
+export interface customerInfo {
+  firstName: string,
+  lastName: string,
+  email: string,
+  tel: string,
+  address: string
+}
+
+export interface orderInfo {
+  userId: string,
+  customerInfo: customerInfo,
+  createdDate: string,
+  status: string,
+  items: orderItem[],
+  id: string
+}
 
 @Injectable({
   providedIn: 'root'
@@ -11,19 +41,15 @@ const API_URL = environment.apiUrl;
 export class UsersService {
   constructor(private http: HttpClient) { }
 
-  getPublicContent(): Observable<any> {
-    return this.http.get(API_URL + 'all', { responseType: 'text' });
+  getAll(page: number, limit: number): Observable<any> {
+    return this.http.get(AUTH_API + `users?page=${page}&limit=${limit}`, httpOptions);
   }
 
-  getUserBoard(): Observable<any> {
-    return this.http.get(API_URL + 'user', { responseType: 'text' });
+  getOne(id: string): Observable<any> {
+    return this.http.get(AUTH_API + 'users/' + id, httpOptions);
   }
 
-  getModeratorBoard(): Observable<any> {
-    return this.http.get(API_URL + 'mod', { responseType: 'text' });
-  }
-
-  getAdminBoard(): Observable<any> {
-    return this.http.get(API_URL + 'admin', { responseType: 'text' });
+  delete(id: string): Observable<any> {
+    return this.http.delete(AUTH_API + 'users/' + id, httpOptions);
   }
 }

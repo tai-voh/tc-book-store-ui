@@ -6,17 +6,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!" [routerLink]="['/']">Home</a></li>
-                <li *ngIf="admin" class="nav-item"><a class="nav-link" routerLink="../books/add">Add book</a></li>
+                <li *ngIf="admin" class="nav-item"><a class="nav-link" routerLink="../books/list">Books</a></li>
+                <li *ngIf="name" class="nav-item"><a class="nav-link" routerLink="../orders/list">Orders</a></li>
+                <li *ngIf="admin" class="nav-item"><a class="nav-link" routerLink="../users/list">Users</a></li>
             </ul>
             <span *ngIf="name" class="me-4">Hello <span *ngIf="admin">admin </span><span class="fw-bold">{{name}}</span>! (<a routerLink="../users/logout">Logout</a>)</span>
             <span *ngIf="!name" class="me-4"><a routerLink="../users/register">Register</a> / <a routerLink="../users/login">Login</a></span>
-            <form class="d-flex">
-                <button class="btn btn-outline-dark" type="submit">
+            <div class="d-flex">
+                <button class="btn btn-outline-dark" type="submit" (click)="onViewCart()">
                     <i class="bi-cart-fill me-1"></i>
                     Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                    <span class="badge bg-dark text-white ms-1 rounded-pill">{{cartTotal}}</span>
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 </nav>

@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NavigatorComponent } from './header/navigator/navigator.component';
 import { MatSnackBarModule} from '@angular/material/snack-bar';
+import { authInterceptorProviders }  from './_helpers/auth.interceptor';
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import { MatSnackBarModule} from '@angular/material/snack-bar';
     HttpClientModule,
     MatSnackBarModule
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

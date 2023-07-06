@@ -1,35 +1,58 @@
-<!-- Header-->
-<header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Book store</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Discover our book world</p>
+<div class="books-form mx-auto my-5">
+    <mat-card class="py-3">
+        <div class="position-relative">
+            <mat-card-title class="text-center mt-3 mb-4 fs-2">Book List</mat-card-title>
+            <div class="position-absolute top-50 end-0 translate-middle-y pe-3 pb-3"><button mat-raised-button color="primary" routerLink="../add">Add Book</button></div>
         </div>
-    </div>
-</header>
-<section class="py-5">
-    <div class="container px-4 px-lg-5 mt-5">
-        <mat-grid-list cols="4" rowHeight="2:3">
-            <mat-grid-tile *ngFor="let book of books">
-                <mat-card class="w-100 h-100 px-3 border">
-                    
-                    <img class="mb-1 mt-3" mat-card-image src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="Photo of a Shiba Inu">                
-                    <mat-card-header>
-                        <mat-card-title>{{book.title}}</mat-card-title>
-                        <mat-card-subtitle>{{getCategoryName(book.categoryId)}}</mat-card-subtitle>
-                        <mat-card-subtitle>{{book.price | currency}}</mat-card-subtitle>
-                      </mat-card-header>
-                    <mat-card-content style="min-height:50px;" class="mt-3">
-                      <p>
-                        {{book.description}}
-                      </p>
-                    </mat-card-content>
-                    <mat-card-actions class="d-flex">
-                      <div class="flex-fill"><button mat-button (click)="onDetail(book.id)">DETAIL</button></div>
-                      <div><button mat-button>ADD TO CART</button></div>
-                    </mat-card-actions>
-                  </mat-card>
-            </mat-grid-tile>
-        </mat-grid-list>
-    </div>
-</section>
+        
+        <mat-card-content>
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell *matHeaderCellDef> No. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="image">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let element"><img class="img p-2" src="{{element.image}}" /></td>
+                    </ng-container>
+                    <ng-container matColumnDef="title">
+                        <th mat-header-cell *matHeaderCellDef> Title </th>
+                        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="quantity">
+                        <th mat-header-cell *matHeaderCellDef> Quantity </th>
+                        <td mat-cell *matCellDef="let element"> {{element.quantity}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef> Price </th>
+                        <td mat-cell *matCellDef="let element"> {{element.price| currency}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="category">
+                        <th mat-header-cell *matHeaderCellDef> Category </th>
+                        <td mat-cell *matCellDef="let element" class="fst-italic"> {{element.categoryName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="update">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let element"><a [routerLink]="['../detail/' + element.id]">View</a> | <a [routerLink]="['../update/' + element.id]">Edit</a></td>
+                    </ng-container>
+                    <ng-container matColumnDef="remove">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let element"><a routerLink="." (click)="onDelete(element)">Remove</a></td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                
+                <mat-paginator
+                    [length]="length"
+                    [pageSizeOptions]="pageSizeOptions"
+                    [pageIndex]="pageIndex"
+                    (page)="handlePageEvent($event)"
+                    showFirstLastButtons
+                    aria-label="Select page of periodic elements">
+                </mat-paginator>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

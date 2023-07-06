@@ -38,7 +38,7 @@ export class RegisterComponent implements OnInit {
   onSubmit(): void {
     const { firstName, lastName, email, password, adminCode } = this.myForm.value;
 
-    var admin = false;
+    let admin = false;
     if (adminCode && adminCode === environment.adminCode) {
       admin = true;
     }
