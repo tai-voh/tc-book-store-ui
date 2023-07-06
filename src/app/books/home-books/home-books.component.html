@@ -10,7 +10,11 @@
 <section class="py-5">
     <div class="container px-4 px-lg-5 mt-3">
         <div class="d-flex flex-row-reverse mb-5">
-          <input #searchInput type="text" class="form-control w-50" placeholder="Search book" aria-label="Search book" autofocus>
+          <mat-form-field>
+            <mat-label>Search book...</mat-label>
+            <input #searchInput matInput type="text" class="search-button" aria-label="Search book..." autofocus>
+              <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
         </div>
         <mat-grid-list cols="4" rowHeight="2:3" class="mb-5">
             <mat-grid-tile *ngFor="let book of books">

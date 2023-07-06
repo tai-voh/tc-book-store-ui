@@ -6,8 +6,7 @@ import { HomeBooksComponent } from './home-books/home-books.component';
 import { AddBookComponent } from './add-book/add-book.component';
 import { BookDetailsComponent } from './book-details/book-details.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
-import { NgFor } from '@angular/common';{}
+import { NgIf, NgFor } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';

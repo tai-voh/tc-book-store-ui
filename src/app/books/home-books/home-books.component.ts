@@ -30,6 +30,7 @@ export class HomeBooksComponent implements OnInit {
   pageSize = 3;
   pageIndex = 0;
   pageSizeOptions = [3,5,10];
+  searchKey = '';
 
   @ViewChild('searchInput', {static: true}) searchInput!: ElementRef
 
@@ -58,19 +59,22 @@ export class HomeBooksComponent implements OnInit {
         map((event: any) => {
           return event.target.value;
         }),
-        filter(searchTerm => searchTerm.length > 2),
+        filter(searchTerm => searchTerm.length > 2 || !searchTerm.length),
         debounceTime(500),
         distinctUntilChanged(),
-        switchMap(searchKey => this.booksService.getBySearchKey(searchKey.toString(), 0, this.pageSize))
+        switchMap(searchKey => {
+          this.searchKey = searchKey;
+          return this.booksService.getBySearchKey(searchKey.toString(), 0, this.pageSize)
+        })
       )
       .subscribe({
         next: (data) => {
           this.books = data.data;
           this.length = data.total;
           this.pageIndex = 0;
-          console.log(this.length);
         },
         error: (err) => {
+          this.searchKey = '';
           this.errorMessage = err.error.message ? err.error.message : 'Get books failed!';
           MessageToastComponent.showMessage(this._snackBar, this.errorMessage);
         }
@@ -125,7 +129,7 @@ export class HomeBooksComponent implements OnInit {
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.pageIndex = e.pageIndex;
-    this.booksService.getAll(this.pageIndex + 1, this.pageSize).subscribe({
+    this.booksService.getBySearchKey(this.searchKey, this.pageIndex + 1, this.pageSize).subscribe({
       next: (data) => {
         this.books = data.data;
         this.length = data.total;
