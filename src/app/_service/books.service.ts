@@ -31,7 +31,7 @@ export class BooksService {
     return this.http.get(AUTH_API + 'books/' + id, httpOptions);
   }
 
-  add(title: string, quantity: number, price: number, description: string, file: File, categoryId: string, userId: string): Observable<any> {
+  oldAdd(title: string, quantity: number, price: number, description: string, file: File, categoryId: string, userId: string): Observable<any> {
     return this.http.post(AUTH_API + 'books', {
       title,
       quantity,
@@ -43,16 +43,35 @@ export class BooksService {
     }, httpOptions);
   }
 
-  delete(id: string): Observable<any> {
+  oldDelete(id: string): Observable<any> {
     return this.http.delete(AUTH_API + 'books/' + id, httpOptions);
   }
 
-  addWithImage(formData: FormData): Observable<any> {
+  oldAddWithImage(formData: FormData): Observable<any> {
     return this.http.post(AUTH_API + 'books', formData);
   }
 
-  updateWithImage(id: string, formData: FormData): Observable<any> {
+  oldUpdateWithImage(id: string, formData: FormData): Observable<any> {
     return this.http.put(AUTH_API + 'books/' + id, formData);
+  }
+
+  addWithImage(formData: FormData): Observable<any> {
+    formData.append('action', 'create');
+    formData.append('id', '');
+    return this.http.post(AUTH_API + 'books/request', formData);
+  }
+
+  updateWithImage(id: string, formData: FormData): Observable<any> {
+    formData.append('action', 'update');
+    formData.append('id', id);
+    return this.http.post(AUTH_API + 'books/request', formData);
+  }
+
+  delete(id: string): Observable<any> {
+    const formData = new FormData();
+    formData.append('action', 'deleteByBookId');
+    formData.append('id', id);
+    return this.http.post(AUTH_API + 'books/request', formData);
   }
 
   getImagePath() {
