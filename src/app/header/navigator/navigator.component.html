@@ -9,6 +9,7 @@
                 <li *ngIf="admin" class="nav-item"><a class="nav-link" routerLink="../books/list">Books</a></li>
                 <li *ngIf="name" class="nav-item"><a class="nav-link" routerLink="../orders/list">Orders</a></li>
                 <li *ngIf="admin" class="nav-item"><a class="nav-link" routerLink="../users/list">Users</a></li>
+                <li *ngIf="name" class="nav-item"><a class="nav-link" routerLink="../customers/list">Customers</a></li>
             </ul>
             <span *ngIf="name" class="me-4">Hello <span *ngIf="admin">admin </span><span class="fw-bold">{{name}}</span>! (<a routerLink="../users/logout">Logout</a>)</span>
             <span *ngIf="!name" class="me-4"><a routerLink="../users/register">Register</a> / <a routerLink="../users/login">Login</a></span>

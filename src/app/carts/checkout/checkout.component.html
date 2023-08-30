@@ -5,32 +5,69 @@
             <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
                 <mat-form-field class="w-50 pe-2">
                     <mat-label>First Name</mat-label>
-                    <input matInput type="text" formControlName="firstName" id="firstName">
+                    <input matInput readonly type="text" formControlName="firstName" id="firstName">
                     <mat-error *ngIf="myError('firstName', 'maxlength')">Not more then 30 characters long.</mat-error>
                 </mat-form-field>
                 <mat-form-field class="w-50">
                     <mat-label>Last Name</mat-label>
-                    <input matInput type="text" formControlName="lastName" id="lastName">
+                    <input matInput readonly type="text" formControlName="lastName" id="lastName">
                     <mat-error *ngIf="myError('lastName', 'maxlength')">Not more then 30 characters long.</mat-error>
                 </mat-form-field>
                 <mat-form-field class="w-100">
                     <mat-label>Email</mat-label>
-                    <input matInput type="email" formControlName="email" id="email">
+                    <input matInput readonly type="email" formControlName="email" id="email">
                     <mat-error *ngIf="myError('email', 'email')">Invalid email format</mat-error>
                 </mat-form-field>
                 <mat-form-field class="w-100">
                     <mat-label>Phone number</mat-label>
-                    <input matInput type="text" formControlName="tel" id="tel">
+                    <input readonly matInput type="text" formControlName="tel" id="tel">
                     <mat-icon matSuffix>phone</mat-icon>
                 </mat-form-field>
                 <mat-form-field class="w-100">
                     <mat-label>Address</mat-label>
-                    <textarea matInput formControlName="address" id="address"></textarea>
-                  </mat-form-field>
-                <div class="text-end">
-                    <button mat-raised-button color="primary" type="submit" [disabled]="!myForm.valid">Checkout</button>
-                    <a routerLink="../details" class="btn btn-link">Cancel</a>
+                    <textarea readonly matInput formControlName="address" id="address"></textarea>
+                </mat-form-field>
+
+                <div class="text-end mb-4">
+                    <a routerLink="/customers/add" class="btn btn-link">+ Add new shipping information</a>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!myForm.valid">Submit</button>
                 </div>
+                
+                <mat-card-title class="text-center mt-3 mb-2 fs-5">Shipping List</mat-card-title>
+                <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell *matHeaderCellDef> No. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="firstName">
+                        <th mat-header-cell *matHeaderCellDef> First Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="lastName">
+                        <th mat-header-cell *matHeaderCellDef> Last Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef> Email </th>
+                        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="tel">
+                        <th mat-header-cell *matHeaderCellDef> Tel</th>
+                        <td mat-cell *matCellDef="let element"> {{element.tel}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="address">
+                        <th mat-header-cell *matHeaderCellDef> Address </th>
+                        <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> </th>
+                        <td mat-cell *matCellDef="let element">
+                            <a routerLink="." (click)="onChoose(element)">Choose</a> | <a [routerLink]="['/customers/detail/' + element.id]">Edit</a>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
             </form>
         </mat-card-content>
     </mat-card>

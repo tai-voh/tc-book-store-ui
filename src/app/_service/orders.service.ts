@@ -53,11 +53,11 @@ export class OrdersService {
     return this.http.get(AUTH_API + 'orders/user/' + id + `?page=${page}&limit=${limit}`, httpOptions);
   }
 
-  add(userId: string, cartId: string, customerInfo: customerInfo): Observable<any> {
+  add(userId: string, cartId: string, customerId: string): Observable<any> {
     return this.http.post(AUTH_API + 'orders', {
       userId,
       cartId,
-      customerInfo
+      customerId
     }, httpOptions);
   }
 

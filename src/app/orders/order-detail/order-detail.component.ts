@@ -32,6 +32,7 @@ export class OrderDetailComponent {
         next: (data) => {
           if (data && data.items?.length) {
             this.orderInfo = data;
+            this.orderInfo.customerInfo = this.orderInfo.customer;
           }
         },
         error: (err) => {

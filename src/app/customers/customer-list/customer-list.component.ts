@@ -1,28 +1,30 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { OrdersService, orderItem, orderInfo } from '../../_service/orders.service';
+import { CustomersService, customerInfo } from '../../_service/customers.service';
 import { TokenStorageService } from '../../_service/token-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageToastComponent } from '../../utilities/message-toast/message-toast.component';
 
-export interface OrderElement {
+export interface CustomerElement {
   no: number,
-  id: string;
-  createdDate: string;
-  items: any[];
-  total: number;
+  id: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  tel: string,
+  address: string,
 }
 
 @Component({
-  selector: 'order-list',
-  templateUrl: './order-list.component.html',
-  styleUrls: ['./order-list.component.scss']
+  selector: 'app-customer-list',
+  templateUrl: './customer-list.component.html',
+  styleUrls: ['./customer-list.component.scss']
 })
-export class OrderListComponent {
-  displayedColumns: string[] = ['no', 'id', 'createdDate', 'items', 'total'];
-  dataSource = new MatTableDataSource<OrderElement>();
+export class CustomerListComponent {
+  displayedColumns: string[] = ['no', 'id', 'firstName', 'lastName', 'email', 'tel', 'address'];
+  dataSource = new MatTableDataSource<CustomerElement>();
   userId = '';
   errorMessage = '';
   length = 0;
@@ -33,17 +35,17 @@ export class OrderListComponent {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private ordersService: OrdersService, private tokenStorage: TokenStorageService, private _snackBar: MatSnackBar ) {}
+  constructor(private customersService: CustomersService, private tokenStorage: TokenStorageService, private _snackBar: MatSnackBar ) {}
 
   ngOnInit() {
     if (this.tokenStorage.getToken()) {
       this.userId = this.tokenStorage.getUser().id;
-      this.ordersService.getByUser(this.userId, this.pageIndex + 1, this.pageSize)
+      this.customersService.getByUser(this.userId, this.pageIndex + 1, this.pageSize)
         .subscribe({
           next: (data) => {
             if (data && data.data?.length) {
-              const orderList = this.setDataSource(data.data)
-              this.dataSource = new MatTableDataSource<OrderElement>(orderList);
+              const customerList = this.setDataSource(data.data)
+              this.dataSource = new MatTableDataSource<CustomerElement>(customerList);
               this.length = data.total;
             }
             else {
@@ -51,33 +53,25 @@ export class OrderListComponent {
             }
           },
           error: (err) => {
-            this.errorMessage = err.error.message ? err.error.message : 'Get orders failed!';
+            this.errorMessage = err.error.message ? err.error.message : 'Get customers failed!';
             MessageToastComponent.showMessage(this._snackBar, this.errorMessage);
           }
       });
     }
   }
 
-  getSubTotal(items: orderItem[]) {
-    let total = 0;
-    if (items) {
-      total = items.reduce((accumulator: number, item: orderItem) => {
-        return accumulator += (item.quantity * item.price)
-      }, 0);
-    }
-    return total;
-  } 
-
-  setDataSource(items: orderInfo[]) {
-    let result: OrderElement[];
+  setDataSource(items: customerInfo[]) {
+    let result: CustomerElement[];
     let no = 1;
     result = items.map(item => {
-      const e: OrderElement = {
+      const e: CustomerElement = {
         no: (this.pageIndex * this.pageSize) + no,
         id: item.id,
-        createdDate: item.createdDate || '',
-        items: item.items || [],
-        total: this.getSubTotal(item.items)
+        firstName: item.firstName || '',
+        lastName: item.lastName || '',
+        email: item.email || '',
+        tel: item.tel || '',
+        address: item.address || '',
       };
       no++;
       return e;
@@ -88,11 +82,11 @@ export class OrderListComponent {
   handlePageEvent(e: PageEvent) {
     this.pageEvent = e;
     this.pageIndex = e.pageIndex;
-    this.ordersService.getByUser(this.userId, this.pageIndex + 1, this.pageSize).subscribe({
+    this.customersService.getByUser(this.userId, this.pageIndex + 1, this.pageSize).subscribe({
       next: (data) => {
         if (data && data.data?.length) {
-          const orderList = this.setDataSource(data.data)
-          this.dataSource = new MatTableDataSource<OrderElement>(orderList);
+          const customerList = this.setDataSource(data.data)
+          this.dataSource = new MatTableDataSource<CustomerElement>(customerList);
           this.length = data.total;
         }
         else {
@@ -100,7 +94,7 @@ export class OrderListComponent {
         }
       },
       error: (err) => {
-        this.errorMessage = err.error.message ? err.error.message : 'Get books failed!';
+        this.errorMessage = err.error.message ? err.error.message : 'Get customers failed!';
         MessageToastComponent.showMessage(this._snackBar, this.errorMessage);
       }
     });

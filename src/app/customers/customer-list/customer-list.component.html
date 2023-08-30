@@ -1,0 +1,50 @@
+<div class="customer-form mx-auto my-5">
+    <mat-card class="py-3">
+        <mat-card-title class="text-center mt-3 mb-4 fs-2">Customer List</mat-card-title>
+        <mat-card-content>
+            <div class="mat-elevation-z8">
+                <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="no">
+                        <th mat-header-cell *matHeaderCellDef> No. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.no}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> Customer ID </th>
+                        <td mat-cell *matCellDef="let element"> <a [routerLink]="['../detail/' + element.id]">{{element.id}}</a> </td>
+                    </ng-container>
+                    <ng-container matColumnDef="firstName">
+                        <th mat-header-cell *matHeaderCellDef> First Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="lastName">
+                        <th mat-header-cell *matHeaderCellDef> Last Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef> Email </th>
+                        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="tel">
+                        <th mat-header-cell *matHeaderCellDef> Tel</th>
+                        <td mat-cell *matCellDef="let element"> {{element.tel}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="address">
+                        <th mat-header-cell *matHeaderCellDef> Address </th>
+                        <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+              
+                <mat-paginator
+                    [length]="length"
+                    [pageSizeOptions]="pageSizeOptions"
+                    [pageIndex]="pageIndex"
+                    (page)="handlePageEvent($event)"
+                    showFirstLastButtons
+                    aria-label="Select page of periodic elements">
+                </mat-paginator>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
